@@ -96,6 +96,27 @@ class Hero(Ability, Armor):
             return True
         pass
 
+    def fight(self, opponent):  
+        ''' Current Hero will take turns fighting the opponent hero passed in.
+        '''
+        # TODO: Fight each hero until a victor emerges.
+        # Print the victor's name to the screen.
+        if self.abilities == [] and opponent.abilities == []:
+            print("Draw!") 
+
+        while self.is_alive == True and opponent.is_alive == True:
+            self.take_damage(opponent.attack)
+            opponent.take_damage(self.attack)
+            
+        if self.is_alive() == True:
+            print(f"{self.name} has Won!")
+        elif opponent.is_alive == True:
+            print(f"{opponent.name} has Won!")
+        else:
+            print("Both Players have died. It is a draw!")
+
+            
+
 
 
         
@@ -128,4 +149,16 @@ if __name__ == "__main__":
     # hero.take_damage(15000)
     # print(hero.is_alive())
 
+    ''' This checks the fight method '''
+    hero1 = Hero("Wonder Woman")
+    hero2 = Hero("Dumbledore")
+    ability1 = Ability("Super Speed", 300)
+    ability2 = Ability("Super Eyes", 130)
+    ability3 = Ability("Wizard Wand", 80)
+    ability4 = Ability("Wizard Beard", 20)
+    hero1.add_ability(ability1)
+    hero1.add_ability(ability2)
+    hero2.add_ability(ability3)
+    hero2.add_ability(ability4)
+    hero1.fight(hero2)
 
