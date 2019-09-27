@@ -116,8 +116,26 @@ class Hero(Ability, Armor):
             print("Both Players have died. It is a draw!")
 
             
+class Weapon(Ability):
+    def attack(self):
+        '''  This method returns a random value
+        between one half to the full attack power of the weapon.
+        '''
+        return random.randint(self.max_damage//2, self.max_damage)
 
-
+class Team:
+    def __init__(self, name):
+        ''' Initialize your team with its team name
+        '''
+        self.heroes = list()
+        self.heroes.append(name)
+        
+    def remove_hero(self, name):
+        '''Remove hero from heroes list.
+        If Hero isn't found return 0.
+        '''
+        return self.heroes.remove(name) if name in self.heroes else 0 
+        
 
         
 
@@ -150,15 +168,14 @@ if __name__ == "__main__":
     # print(hero.is_alive())
 
     ''' This checks the fight method '''
-    hero1 = Hero("Wonder Woman")
-    hero2 = Hero("Dumbledore")
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)
-
+    # hero1 = Hero("Wonder Woman")
+    # hero2 = Hero("Dumbledore")
+    # ability1 = Ability("Super Speed", 300)
+    # ability2 = Ability("Super Eyes", 130)
+    # ability3 = Ability("Wizard Wand", 80)
+    # ability4 = Ability("Wizard Beard", 20)
+    # hero1.add_ability(ability1)
+    # hero1.add_ability(ability2)
+    # hero2.add_ability(ability3)
+    # hero2.add_ability(ability4)
+    # hero1.fight(hero2)
