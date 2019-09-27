@@ -94,13 +94,11 @@ class Hero(Ability, Armor):
             return False
         else:
             return True
-        pass
+        
 
     def fight(self, opponent):  
         ''' Current Hero will take turns fighting the opponent hero passed in.
         '''
-        # TODO: Fight each hero until a victor emerges.
-        # Print the victor's name to the screen.
         if self.abilities == [] and opponent.abilities == []:
             print("Draw!") 
 
@@ -127,15 +125,25 @@ class Team:
     def __init__(self, name):
         ''' Initialize your team with its team name
         '''
-        self.heroes = list()
-        self.heroes.append(name)
+        self.heroes = [name]
         
     def remove_hero(self, name):
         '''Remove hero from heroes list.
         If Hero isn't found return 0.
         '''
         return self.heroes.remove(name) if name in self.heroes else 0 
+    
+    def view_heroes(self):
+        print('These are your heroes: ')
+        for hero in self.heroes:
+            print(" --       ", hero)
         
+
+    def add_hero(self, hero):
+        '''Add Hero object to self.heroes.'''
+        # TODO: Add the Hero object that is passed in to the list of heroes in
+        # self.heroes
+        self.heroes.append(hero)
 
         
 
@@ -179,3 +187,15 @@ if __name__ == "__main__":
     # hero2.add_ability(ability3)
     # hero2.add_ability(ability4)
     # hero1.fight(hero2)
+    
+
+    ''' this checks the Weapon polymorphic code '''
+    # weapon = Weapon("sword", 4)
+    # print(weapon.attack())
+
+    ''' This checks the heroes list. '''
+    # redTeam = Team("omar")
+    # redTeam.add_hero("tas")
+    # redTeam.add_hero("chris")
+
+    # redTeam.view_heroes()
