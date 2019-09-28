@@ -41,6 +41,8 @@ class Hero(Ability, Armor):
         self.current_health = self.max_health
         self.armors = list()
         self.abilities = list()
+        self.kills = 0
+        self.deaths = 0
 
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
@@ -94,6 +96,14 @@ class Hero(Ability, Armor):
             return False
         else:
             return True
+
+    def add_kill(self):
+        ''' Adds 1 to the amount of kills the hero has '''
+        self.kills += 1
+
+    def add_death(self):
+        ''' adds 1 to the amount of deaths the hero has '''
+        self.deaths += 1
         
 
     def fight(self, opponent):  
@@ -108,10 +118,16 @@ class Hero(Ability, Armor):
             
         if self.is_alive() == True:
             print(f"{self.name} has Won!")
+            self.add_kill()
+            opponent.add_death()
         elif opponent.is_alive == True:
             print(f"{opponent.name} has Won!")
+            opponent.add_kill()
+            self.add_death()
         else:
             print("Both Players have died. It is a draw!")
+            self.add_death()
+            opponent.add_death()
 
             
 class Weapon(Ability):
@@ -121,22 +137,27 @@ class Weapon(Ability):
         '''
         return random.randint(self.max_damage//2, self.max_damage)
 
-class Team:
+class Team(Hero, Ability):
     def __init__(self, name):
         ''' Initialize your team with its team name
         '''
-        self.heroes = [name]
+        self.name = name
+        self.heroes = list()
         
     def remove_hero(self, name):
         '''Remove hero from heroes list.
         If Hero isn't found return 0.
         '''
-        return self.heroes.remove(name) if name in self.heroes else 0 
+        # return self.heroes.remove(name) if name in self.heroes else 0 
+        if name in self.heroes:
+            return self.heroes.remove(name)
+        else:
+            return 0
     
-    def view_heroes(self):
+    def view_all_heroes(self):
         print('These are your heroes: ')
         for hero in self.heroes:
-            print(" --       ", hero)
+            print(" --       ", hero.name)
         
 
     def add_hero(self, hero):
@@ -176,17 +197,19 @@ if __name__ == "__main__":
     # print(hero.is_alive())
 
     ''' This checks the fight method '''
-    # hero1 = Hero("Wonder Woman")
-    # hero2 = Hero("Dumbledore")
-    # ability1 = Ability("Super Speed", 300)
-    # ability2 = Ability("Super Eyes", 130)
-    # ability3 = Ability("Wizard Wand", 80)
-    # ability4 = Ability("Wizard Beard", 20)
-    # hero1.add_ability(ability1)
-    # hero1.add_ability(ability2)
-    # hero2.add_ability(ability3)
-    # hero2.add_ability(ability4)
-    # hero1.fight(hero2)
+    hero1 = Hero("Wonder Woman")
+    hero2 = Hero("Dumbledore")
+    ability1 = Ability("Super Speed", 300)
+    ability2 = Ability("Super Eyes", 130)
+    ability3 = Ability("Wizard Wand", 80)
+    ability4 = Ability("Wizard Beard", 20)
+    hero1.add_ability(ability1)
+    hero1.add_ability(ability2)
+    hero2.add_ability(ability3)
+    hero2.add_ability(ability4)
+    hero1.fight(hero2)
+    print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
+    print(f"{hero2.name} has {hero2.kills} kills and {hero2.deaths} deaths")
     
 
     ''' this checks the Weapon polymorphic code '''
@@ -194,8 +217,14 @@ if __name__ == "__main__":
     # print(weapon.attack())
 
     ''' This checks the heroes list. '''
-    # redTeam = Team("omar")
-    # redTeam.add_hero("tas")
-    # redTeam.add_hero("chris")
-
-    # redTeam.view_heroes()
+    # redTeam = Team("Red Team")
+    # tas = Hero("Tas")
+    # redTeam.add_hero(tas)
+    # print(redTeam.name)
+    # redTeam.view_all_heroes()
+    # redTeam.remove_hero(tas)
+    # redTeam.view_all_heroes()
+    # redTeam.remove_hero("omar")
+    # test = redTeam.remove_hero("omar")
+    # print(test)
+    # print(len(redTeam.heroes))
