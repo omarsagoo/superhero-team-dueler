@@ -37,8 +37,9 @@ class Hero(Ability, Armor):
           current_health: Integer
         '''
         self.name = name
+        self.starting_health = starting_health
         self.max_health = starting_health
-        self.current_health = self.max_health
+        self.current_health = starting_health
         self.armors = list()
         self.abilities = list()
         self.kills = 0
@@ -47,6 +48,11 @@ class Hero(Ability, Armor):
     def add_ability(self, ability):
         ''' Add ability to abilities list '''
         self.abilities.append(ability)
+
+    def add_weapon(self, weapon):
+        '''Add weapon to self.abilities'''
+        self.abilities.append(weapon)
+        
 
     def attack(self):
         '''Calculate the total damage from all ability attacks.
@@ -57,7 +63,6 @@ class Hero(Ability, Armor):
         for ability in self.abilities: 
             new_damage = damage + ability.attack()
             damage = new_damage
-
         return damage
 
     def add_armor(self, armor):
@@ -86,7 +91,7 @@ class Hero(Ability, Armor):
             damage_taken = 0
 
         self.current_health = self.current_health - damage_taken
-         
+
         return self.current_health
 
     def is_alive(self):  
@@ -112,15 +117,15 @@ class Hero(Ability, Armor):
         if self.abilities == [] and opponent.abilities == []:
             print("Draw!") 
 
-        while self.is_alive == True and opponent.is_alive == True:
-            self.take_damage(opponent.attack)
-            opponent.take_damage(self.attack)
+        while self.is_alive() == True and opponent.is_alive() == True:
+            self.take_damage(opponent.attack())
+            opponent.take_damage(self.attack())
             
-        if self.is_alive() == True:
+        if self.is_alive() == True and opponent.is_alive() == False:
             print(f"{self.name} has Won!")
             self.add_kill()
             opponent.add_death()
-        elif opponent.is_alive == True:
+        elif opponent.is_alive == True and self.is_alive() == False:
             print(f"{opponent.name} has Won!")
             opponent.add_kill()
             self.add_death()
@@ -272,32 +277,37 @@ if __name__ == "__main__":
     # print(len(redTeam.heroes))
 
     ''' this checks the stats of the teams as well as the team fighting'''
-    redTeam = Team("Red Team")
-    blueTeam = Team("blue Team")
-    tas = Hero("Tas")
-    luke = Hero("Luke")
-    omar = Hero("Omar")
-    anthony = Hero("Anthony")
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    tas.add_ability(ability1)
-    tas.add_ability(ability2)
-    luke.add_ability(ability3)
-    luke.add_ability(ability4)
-    omar.add_ability(ability1)
-    omar.add_ability(ability2)
-    anthony.add_ability(ability3)
-    anthony.add_ability(ability4)
-    redTeam.add_hero(tas)
-    redTeam.add_hero(luke)
-    blueTeam.add_hero(omar)
-    blueTeam.add_hero(anthony)
-    # print(redTeam.name)
+    # redTeam = Team("Red Team")
+    # blueTeam = Team("blue Team")
+    # tas = Hero("Tas")
+    # luke = Hero("Luke")
+    # omar = Hero("Omar")
+    # anthony = Hero("Anthony")
+    # ability1 = Ability("Super Speed", 300)
+    # ability2 = Ability("Super Eyes", 130)
+    # ability3 = Ability("Wizard Wand", 80)
+    # ability4 = Ability("Wizard Beard", 20)
+    # tas.add_ability(ability1)
+    # tas.add_ability(ability2)
+    # luke.add_ability(ability3)
+    # luke.add_ability(ability4)
+    # omar.add_ability(ability1)
+    # omar.add_ability(ability2)
+    # anthony.add_ability(ability3)
+    # anthony.add_ability(ability4)
+    # redTeam.add_hero(tas)
+    # redTeam.add_hero(luke)
+    # blueTeam.add_hero(omar)
+    # blueTeam.add_hero(anthony)
+    # # print(redTeam.name)
     # redTeam.view_all_heroes()
-    redTeam.attack(blueTeam)
-    redTeam.stats()
-    blueTeam.stats()
-    print(redTeam.team_kills())
-    redTeam.team_won(blueTeam)
+    # redTeam.attack(blueTeam)
+    # redTeam.stats()
+    # blueTeam.stats()
+    # print(redTeam.team_kills())
+    # redTeam.team_won(blueTeam)
+    # print(omar.current_health)
+
+    # hero = Hero("omar", 100)
+    # hero.take_damage(40)
+    # print(hero.current_health)
