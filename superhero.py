@@ -114,12 +114,22 @@ class Hero:
     def fight(self, opponent):  
         ''' Current Hero will take turns fighting the opponent hero passed in.
         '''
-        if self.abilities == [] and opponent.abilities == []:
-            print("Draw!") 
+        self_is_alive = True
+        opp_is_alive = True
+        draw = False
 
-        while self.is_alive() == True and opponent.is_alive() == True:
+        while self_is_alive == True and opp_is_alive == True or draw == False:
+            print("Start!")
+            self_is_alive = self.is_alive()
+            opp_is_alive = opponent.is_alive()
+
+            if self.abilities == [] and opponent.abilities == []:
+                print("Draw!")
+                return  draw == True
+            
             self.take_damage(opponent.attack())
             opponent.take_damage(self.attack())
+            
             
         if self.is_alive() == True and opponent.is_alive() == False:
             print(f"{self.name} has Won!")
@@ -218,28 +228,28 @@ class Arena(Ability):
         team_one: None
         team_two: None
         '''
-        self.team_one = None
-        self.team_two = None
+        self.team_one = []
+        self.team_two = []
 
     def create_ability(self):
         '''Prompt for Ability information.
             return Ability with values from user Input
         '''
-        ability = Ability(input_handler("What is the name of the ability? "), input_handler("Give a strength value: "))
+        ability = Ability(input_handler("What is the name of the ability? "), int(input_handler("Give a strength value: ")))
         return ability
 
     def create_weapon(self):
         '''Prompt user for Weapon information
             return Weapon with values from user input.
         '''
-        weapon = Weapon(input_handler("What is the name of the Weapon? "), input_handler("Give a strength value: "))
+        weapon = Weapon(input_handler("What is the name of the Weapon? "), int(input_handler("Give a strength value: ")))
         return weapon
 
     def create_armor(self):
         '''Prompt user for Armor information
           return Armor with values from user input.
         '''
-        armor = Armor(input_handler("What is the name of the armor? "), input_handler("Give a strength value: "))
+        armor = Armor(input_handler("What is the name of the armor? "), int(input_handler("Give a strength value: ")))
         return armor
         
     def create_hero(self):
@@ -305,23 +315,31 @@ class Arena(Ability):
         print(self.team_one.stats)
         print(self.team_two.stats)
             
-        
-
-    
-
-
+  
 def input_handler(prompt):
     user_input = input(prompt)
 
     if user_input == '':
         print('you must provide some information!')
         return input_handler(prompt)
-    elif prompt == "Give a strength value: " and user_input.isalpha() == True:
+    elif ("Give a" in prompt == True or "how many" in prompt == True) and has_nums_and_letters(user_input) == True:
         print('You must input a number!')
+        # return input_handler(prompt)
+        return True
+    elif "how many" in prompt and has_nums_and_letters(user_input):
+        print('You must input a number! ')
         return input_handler(prompt)
+    else:
+        return user_input
 
-    return user_input
+def has_numbers(input_val):
+    return any(num.isdigit() for num in input_val)
 
+def has_nums_and_letters(input_val):
+    if any(num.isdigit() for num in input_val) and any(letter.isalpha() for letter in input_val):
+        return True
+    else:
+        return False
 
 
 if __name__ == "__main__":
@@ -351,18 +369,18 @@ if __name__ == "__main__":
     # print(hero.is_alive())
 
     ''' This checks the fight method '''
-    # hero1 = Hero("Wonder Woman")
-    # hero2 = Hero("Dumbledore")
-    # ability1 = Ability("Super Speed", 300)
-    # ability2 = Ability("Super Eyes", 130)
-    # ability3 = Ability("Wizard Wand", 80)
-    # ability4 = Ability("Wizard Beard", 20)
-    # hero1.add_ability(ability1)
-    # hero1.add_ability(ability2)
-    # hero2.add_ability(ability3)
-    # hero2.add_ability(ability4)
-    # hero1.fight(hero2)
-    # print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
+    hero1 = Hero("Wonder Woman")
+    hero2 = Hero("Dumbledore")
+    ability1 = Ability("Super Speed", 300)
+    ability2 = Ability("Super Eyes", 130)
+    ability3 = Ability("Wizard Wand", 80)
+    ability4 = Ability("Wizard Beard", 20)
+    hero1.add_ability(ability1)
+    hero1.add_ability(ability2)
+    hero2.add_ability(ability3)
+    hero2.add_ability(ability4)
+    hero1.fight(hero2)
+    print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
     
     
 
@@ -418,3 +436,12 @@ if __name__ == "__main__":
     # hero = Hero("omar", 100)
     # hero.take_damage(40)
     # print(hero.current_health)
+
+    ''' checks the arena class '''
+    # arena = Arena()
+    # arena.build_team_one()
+    # print(arena.team_one.view_all_heroes)
+    # arena.build_team_two
+    # print(arena.team_two)
+    # arena.team_battle()
+    # arena.show_stats()
