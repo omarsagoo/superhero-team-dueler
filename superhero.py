@@ -162,9 +162,51 @@ class Team(Hero, Ability):
 
     def add_hero(self, hero):
         '''Add Hero object to self.heroes.'''
-        # TODO: Add the Hero object that is passed in to the list of heroes in
-        # self.heroes
+        
         self.heroes.append(hero)
+
+    def team_kills(self):
+        total_kills = 0
+
+        for hero in self.heroes:
+            kill = hero.kills + total_kills
+            total_kills = kill
+
+        return total_kills
+
+    def attack(self, other_team):
+        ''' Battle each team against each other.'''
+        heroes_fought = list()
+        while len(heroes_fought) != len(self.heroes) + len(other_team.heroes):
+            
+            for hero1, hero2 in zip(self.heroes, other_team.heroes):
+                hero1.fight(hero2)
+                heroes_fought.append(hero1)
+                heroes_fought.append(hero2)
+    
+    def team_won(self, other_team):
+        if self.team_kills() > other_team.team_kills():
+            print(f"{self.name} has won!")
+        elif self.team_kills() < other_team.team_kills():
+            print(f"{other_team.name} has won!")
+        else:
+            print("draw!!")
+
+    def revive_heroes(self, health=100):
+        ''' Reset all heroes health to starting_health'''
+        for hero in self.heroes:
+            hero.current_health = health
+    
+
+    def stats(self):
+        '''Print team statistics'''
+        print("Stats: ")
+        for hero in self.heroes:
+            print(f'''    {hero.name}: 
+            kills: {hero.kills}
+            deaths: {hero.deaths}
+            ''')
+
 
         
 
@@ -197,19 +239,19 @@ if __name__ == "__main__":
     # print(hero.is_alive())
 
     ''' This checks the fight method '''
-    hero1 = Hero("Wonder Woman")
-    hero2 = Hero("Dumbledore")
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)
-    print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
-    print(f"{hero2.name} has {hero2.kills} kills and {hero2.deaths} deaths")
+    # hero1 = Hero("Wonder Woman")
+    # hero2 = Hero("Dumbledore")
+    # ability1 = Ability("Super Speed", 300)
+    # ability2 = Ability("Super Eyes", 130)
+    # ability3 = Ability("Wizard Wand", 80)
+    # ability4 = Ability("Wizard Beard", 20)
+    # hero1.add_ability(ability1)
+    # hero1.add_ability(ability2)
+    # hero2.add_ability(ability3)
+    # hero2.add_ability(ability4)
+    # hero1.fight(hero2)
+    # print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
+    
     
 
     ''' this checks the Weapon polymorphic code '''
@@ -228,3 +270,34 @@ if __name__ == "__main__":
     # test = redTeam.remove_hero("omar")
     # print(test)
     # print(len(redTeam.heroes))
+
+    ''' this checks the stats of the teams as well as the team fighting'''
+    redTeam = Team("Red Team")
+    blueTeam = Team("blue Team")
+    tas = Hero("Tas")
+    luke = Hero("Luke")
+    omar = Hero("Omar")
+    anthony = Hero("Anthony")
+    ability1 = Ability("Super Speed", 300)
+    ability2 = Ability("Super Eyes", 130)
+    ability3 = Ability("Wizard Wand", 80)
+    ability4 = Ability("Wizard Beard", 20)
+    tas.add_ability(ability1)
+    tas.add_ability(ability2)
+    luke.add_ability(ability3)
+    luke.add_ability(ability4)
+    omar.add_ability(ability1)
+    omar.add_ability(ability2)
+    anthony.add_ability(ability3)
+    anthony.add_ability(ability4)
+    redTeam.add_hero(tas)
+    redTeam.add_hero(luke)
+    blueTeam.add_hero(omar)
+    blueTeam.add_hero(anthony)
+    # print(redTeam.name)
+    # redTeam.view_all_heroes()
+    redTeam.attack(blueTeam)
+    redTeam.stats()
+    blueTeam.stats()
+    print(redTeam.team_kills())
+    redTeam.team_won(blueTeam)
