@@ -118,24 +118,33 @@ class Hero:
         opp_is_alive = True
         draw = False
 
-        while self_is_alive == True and opp_is_alive == True or draw == False:
-            print("Start!")
+        ''' while loop to run the fight, commented prints are for error handling '''
+        while self_is_alive == True and opp_is_alive == True:
+            # print("Start!")
             self_is_alive = self.is_alive()
+            # print(f"6 {self_is_alive}")
             opp_is_alive = opponent.is_alive()
+            # print(f"5 {opp_is_alive}")
 
             if self.abilities == [] and opponent.abilities == []:
                 print("Draw!")
                 return  draw == True
             
-            self.take_damage(opponent.attack())
-            opponent.take_damage(self.attack())
+            val2 = self.take_damage(opponent.attack())
+            self_is_alive = self.is_alive()
+            # print(f"4 {self_is_alive}")
+            # print(f"3 {val2}")
+            val1 = opponent.take_damage(self.attack())
+            opp_is_alive = opponent.is_alive()
+            # print(f"2 {opp_is_alive}")
+            # print(f"1 {val1}")
             
             
-        if self.is_alive() == True and opponent.is_alive() == False:
+        if self_is_alive == True and opp_is_alive == False:
             print(f"{self.name} has Won!")
             self.add_kill()
             opponent.add_death()
-        elif opponent.is_alive == True and self.is_alive() == False:
+        elif opp_is_alive == True and self_is_alive == False:
             print(f"{opponent.name} has Won!")
             opponent.add_kill()
             self.add_death()
@@ -219,7 +228,7 @@ class Team(Hero, Ability):
             print(f'''    {hero.name}: 
             kills: {hero.kills}
             deaths: {hero.deaths}
-            k/d: {hero.kills//hero.deaths}
+            k/d: {hero.kills}/{hero.deaths}
             ''')
 
 class Arena(Ability):
@@ -312,8 +321,8 @@ class Arena(Ability):
     def show_stats(self):
         '''Prints team statistics to terminal.'''
         self.team_one.team_won(self.team_two)
-        print(self.team_one.stats)
-        print(self.team_two.stats)
+        print(self.team_one.stats())
+        print(self.team_two.stats())
             
   
 def input_handler(prompt):
@@ -322,21 +331,19 @@ def input_handler(prompt):
     if user_input == '':
         print('you must provide some information!')
         return input_handler(prompt)
-    elif ("Give a" in prompt == True or "how many" in prompt == True) and has_nums_and_letters(user_input) == True:
+    elif "Give a" in prompt and has_nums_and_letters(user_input) == True:
         print('You must input a number!')
-        # return input_handler(prompt)
-        return True
-    elif "how many" in prompt and has_nums_and_letters(user_input):
+        return input_handler(prompt)
+    elif "how many" in prompt and has_nums_and_letters(user_input) == True:
         print('You must input a number! ')
         return input_handler(prompt)
     else:
         return user_input
 
-def has_numbers(input_val):
-    return any(num.isdigit() for num in input_val)
-
 def has_nums_and_letters(input_val):
     if any(num.isdigit() for num in input_val) and any(letter.isalpha() for letter in input_val):
+        return True
+    elif any(letter.isalpha() for letter in input_val):
         return True
     else:
         return False
@@ -345,6 +352,30 @@ def has_nums_and_letters(input_val):
 if __name__ == "__main__":
     # If you run this file from the terminal
     # this block is executed.
+
+    game_is_running = True
+
+    # Instantiate Game Arena
+    arena = Arena()
+
+    #Build Teams
+    # arena.build_team_one()
+    # arena.build_team_two()
+
+    while game_is_running:
+
+        arena.team_battle()
+        arena.show_stats()
+        play_again = input("Play Again? Y or N: ")
+
+        #Check for Player Input
+        if play_again.lower() == "n":
+            game_is_running = False
+
+        else:
+            #Revive heroes to play again
+            arena.team_one.revive_heroes()
+            arena.team_two.revive_heroes()
     
     ''' This checks if the hero.attack() method works'''
     # ability = Ability("Great Debugging", 50)
@@ -369,18 +400,18 @@ if __name__ == "__main__":
     # print(hero.is_alive())
 
     ''' This checks the fight method '''
-    hero1 = Hero("Wonder Woman")
-    hero2 = Hero("Dumbledore")
-    ability1 = Ability("Super Speed", 300)
-    ability2 = Ability("Super Eyes", 130)
-    ability3 = Ability("Wizard Wand", 80)
-    ability4 = Ability("Wizard Beard", 20)
-    hero1.add_ability(ability1)
-    hero1.add_ability(ability2)
-    hero2.add_ability(ability3)
-    hero2.add_ability(ability4)
-    hero1.fight(hero2)
-    print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
+    # hero1 = Hero("Wonder Woman")
+    # hero2 = Hero("Dumbledore")
+    # ability1 = Ability("Super Speed", 3)
+    # ability2 = Ability("Super Eyes", 10)
+    # ability3 = Ability("Wizard Wand", 800000)
+    # ability4 = Ability("Wizard Beard", 200000)
+    # hero1.add_ability(ability1)
+    # hero1.add_ability(ability2)
+    # hero2.add_ability(ability3)
+    # hero2.add_ability(ability4)
+    # hero1.fight(hero2)
+    # print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
     
     
 
@@ -440,8 +471,8 @@ if __name__ == "__main__":
     ''' checks the arena class '''
     # arena = Arena()
     # arena.build_team_one()
-    # print(arena.team_one.view_all_heroes)
-    # arena.build_team_two
-    # print(arena.team_two)
+    # print(arena.team_one.view_all_heroes())
+    # arena.build_team_two()
+    # print(arena.team_two.view_all_heroes())
     # arena.team_battle()
     # arena.show_stats()
