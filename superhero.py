@@ -1,5 +1,6 @@
 import random
 
+
 class Ability:
     def __init__(self, name, attack_strength):
         '''Create Instance Variables:
@@ -10,9 +11,9 @@ class Ability:
         self.max_damage = attack_strength
 
     def attack(self):
-      ''' Return a value between 0 and the value set by self.max_damage.'''
-      # Return an attack value between 0 and the full attack.
-      return random.randint(0,self.max_damage)
+        ''' Return a value between 0 and the value set by self.max_damage.'''
+        # Return an attack value between 0 and the full attack.
+        return random.randint(0,self.max_damage)
 
 class Armor:
     def __init__(self, name, max_block):
@@ -134,8 +135,22 @@ class Hero:
             self_is_alive = self.is_alive()
             # print(f"4 {self_is_alive}")
             # print(f"3 {val2}")
+            if self_is_alive == False:
+                return self_is_alive
+            else: 
+                self_is_alive = True
+                return self_is_alive
+
+           
             val1 = opponent.take_damage(self.attack())
             opp_is_alive = opponent.is_alive()
+
+            if opp_is_alive == False:
+                return opp_is_alive
+            else:
+                opp_is_alive = True
+                return opp_is_alive
+
             # print(f"2 {opp_is_alive}")
             # print(f"1 {val1}")
             
@@ -182,7 +197,6 @@ class Team(Hero, Ability):
         for hero in self.heroes:
             print(" --       ", hero.name)
         
-
     def add_hero(self, hero):
         '''Add Hero object to self.heroes.'''
         
@@ -231,7 +245,7 @@ class Team(Hero, Ability):
             k/d: {hero.kills}/{hero.deaths}
             ''')
 
-class Arena(Ability):
+class Arena:
     def __init__(self):
         '''Instantiate properties
         team_one: None
@@ -310,9 +324,7 @@ class Arena(Ability):
 
     def team_battle(self):
         '''Battle team_one and team_two together.'''
-        # TODO: This method should battle the teams together.
-        # Call the attack method that exists in your team objects
-        # for that battle functionality.
+        
         self.team_one = self.build_team_one()
         self.team_two = self.build_team_two()
 
@@ -358,9 +370,9 @@ if __name__ == "__main__":
     # Instantiate Game Arena
     arena = Arena()
 
-    #Build Teams
-    # arena.build_team_one()
-    # arena.build_team_two()
+    # Build Teams
+    arena.build_team_one()
+    arena.build_team_two()
 
     while game_is_running:
 
@@ -402,17 +414,17 @@ if __name__ == "__main__":
     ''' This checks the fight method '''
     # hero1 = Hero("Wonder Woman")
     # hero2 = Hero("Dumbledore")
-    # ability1 = Ability("Super Speed", 3)
-    # ability2 = Ability("Super Eyes", 10)
-    # ability3 = Ability("Wizard Wand", 800000)
-    # ability4 = Ability("Wizard Beard", 200000)
+    # ability1 = Ability("Super Speed", 3523514353)
+    # ability2 = Ability("Super Eyes", 101243215)
+    # ability3 = Ability("Wizard Wand", 80000352350)
+    # ability4 = Ability("Wizard Beard", 20005123500)
     # hero1.add_ability(ability1)
     # hero1.add_ability(ability2)
     # hero2.add_ability(ability3)
     # hero2.add_ability(ability4)
     # hero1.fight(hero2)
     # print(f"{hero1.name} has {hero1.kills} kills and {hero1.deaths} deaths")
-    
+
     
 
     ''' this checks the Weapon polymorphic code '''
