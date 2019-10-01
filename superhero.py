@@ -131,10 +131,10 @@ class Hero:
                 print("Draw!")
                 return  draw == True
             
-            val2 = self.take_damage(opponent.attack())
+            _ = self.take_damage(opponent.attack())
             self_is_alive = self.is_alive()
             # print(f"4 {self_is_alive}")
-            # print(f"3 {val2}")
+            # print(f"3 {_}")
             if self_is_alive == False:
                 return self_is_alive
             else: 
@@ -142,7 +142,7 @@ class Hero:
                 return self_is_alive
 
            
-            val1 = opponent.take_damage(self.attack())
+            _ = opponent.take_damage(self.attack())
             opp_is_alive = opponent.is_alive()
 
             if opp_is_alive == False:
@@ -152,7 +152,7 @@ class Hero:
                 return opp_is_alive
 
             # print(f"2 {opp_is_alive}")
-            # print(f"1 {val1}")
+            # print(f"1 {_}")
             
             
         if self_is_alive == True and opp_is_alive == False:
